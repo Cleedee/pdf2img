@@ -19,6 +19,12 @@ powershell -c "irm https://raw.githubusercontent.com/Cleedee/pdf2img/main/instal
 
 Baixa, instala tudo e abre a interface gráfica automaticamente.
 
+Para instalar **sem abrir a interface** (útil em servidores):
+
+```powershell
+powershell -c "irm https://raw.githubusercontent.com/Cleedee/pdf2img/main/install.ps1 -OutFile install.ps1; .\install.ps1 -NoGui"
+```
+
 **Opção B — Terminal (já com o repositório clonado):**
 
 ```batch
@@ -40,6 +46,18 @@ curl -sSL https://raw.githubusercontent.com/Cleedee/pdf2img/main/install.sh | ba
 ```
 
 Baixa, instala tudo e abre a interface gráfica automaticamente.
+
+Para instalar **sem abrir a interface** (útil em servidores/headless):
+
+```bash
+curl -sSL https://raw.githubusercontent.com/Cleedee/pdf2img/main/install.sh | bash -s -- --no-gui
+```
+
+Ou se preferir primeiro baixar o script:
+
+```bash
+bash install.sh --no-gui
+```
 
 **Opção B — Terminal (já com o repositório clonado):**
 

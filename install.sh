@@ -18,11 +18,15 @@ GUI_SCRIPT="$PROJECT_DIR/pdf2img_gui.py"
 if [ ! -f "$GUI_SCRIPT" ]; then
     echo "[*] Baixando pdf2img do GitHub..."
     if command -v git &>/dev/null; then
-        git clone "$REPO_URL" "$PROJECT_DIR"
+        git clone "$REPO_URL" "$PROJECT_DIR.tmp"
+        mkdir -p "$PROJECT_DIR"
+        cp -r "$PROJECT_DIR.tmp"/* "$PROJECT_DIR/"
+        rm -rf "$PROJECT_DIR.tmp"
     else
         url="https://github.com/Cleedee/pdf2img/archive/refs/heads/main.tar.gz"
         tmp="$(mktemp -d)"
         curl -sSL "$url" | tar -xz -C "$tmp"
+        rm -rf "$PROJECT_DIR"
         mkdir -p "$PROJECT_DIR"
         cp -r "$tmp"/pdf2img-main/* "$PROJECT_DIR/"
         rm -rf "$tmp"
@@ -38,7 +42,7 @@ fi
 
 # Step 3: ensure Python version
 echo "[*] Verificando Python $PYTHON_VERSION..."
-uv python install "$PYTHON_VERSION" 2>/dev/null || true
+uv python install "$PYTHON_VERSION"
 
 # Step 4: ensure venv and dependencies
 if [ ! -f "$PYTHON_PATH" ]; then
@@ -47,12 +51,21 @@ if [ ! -f "$PYTHON_PATH" ]; then
 fi
 
 echo "[*] Instalando dependencias (PyMuPDF)..."
-uv pip install --python "$PYTHON_PATH" PyMuPDF 2>/dev/null || true
+uv pip install --python "$PYTHON_PATH" PyMuPDF
 
 echo "[*] Instalacao concluida!"
 
-# Step 5: run GUI
-if [[ $# -eq 0 || "$1" != "--no-gui" ]]; then
-    echo "[*] Iniciando pdf2img_gui.py..."
-    exec "$PYTHON_PATH" "$GUI_SCRIPT"
+# Step 5: run GUI (only if not sourced and --no-gui not passed)
+if [[ ! "${BASH_SOURCE[0]}" || "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    no_gui=0
+    for arg in "$@"; do
+        if [[ "$arg" == "--no-gui" ]]; then
+            no_gui=1
+            break
+        fi
+    done
+    if [[ $no_gui -eq 0 ]]; then
+        echo "[*] Iniciando pdf2img_gui.py..."
+        exec "$PYTHON_PATH" "$GUI_SCRIPT"
+    fi
 fi
