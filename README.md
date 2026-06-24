@@ -11,7 +11,15 @@ Extração de páginas de PDF para imagem (PNG/JPG) ou novo PDF.
 
 ### Windows
 
-**Opção A — Terminal:**
+**Opção A — Comando único (recomendado):**
+
+```powershell
+powershell -c "irm https://raw.githubusercontent.com/Cleedee/pdf2img/main/install.ps1 | iex"
+```
+
+Baixa, instala tudo e abre a interface gráfica automaticamente.
+
+**Opção B — Terminal (já com o repositório clonado):**
 
 ```batch
 pdf2img install
@@ -25,7 +33,15 @@ pdf2img install
 
 ### Linux
 
-Abra o terminal na pasta e execute:
+**Opção A — Comando único (recomendado):**
+
+```bash
+curl -sSL https://raw.githubusercontent.com/Cleedee/pdf2img/main/install.sh | bash
+```
+
+Baixa, instala tudo e abre a interface gráfica automaticamente.
+
+**Opção B — Terminal (já com o repositório clonado):**
 
 ```bash
 ./pdf2img.sh install
